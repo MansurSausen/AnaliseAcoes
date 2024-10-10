@@ -18,14 +18,14 @@ empresas = empresas.reset_index()
 
 
         # Seleciona a empresa
-        # AGRO3 20036   CBA 25984   PETR4  9512  BBAS3 1023 ITUB4 19348  suzano 13986  cielo 21733
-empresa = dre[dre['CD_CVM'] == 21610]
+        # AGRO3 20036   CBA 25984   PETR4  9512  BBAS3 1023 ITUB4 19348  suzano 13986  cielo 21733 elet3 2437 
+empresa = dre[dre['CD_CVM'] == 2437]
 contas = empresa[['CD_CONTA', 'DS_CONTA']].drop_duplicates().set_index('CD_CONTA')
 
 #with pd.option_context('display.max_rows', None, 'display.max_columns', None):  # more options can be specified also
 #    print(contas)
     
-ticker = 'ABEV3.SA'
+ticker = 'ELET3.SA'
 ticker_yahoo = yf.Ticker(ticker)
 data = ticker_yahoo.history()
 last_quote = data['Close'].iloc[-1]

@@ -41,6 +41,7 @@ def getValorPresenteTopEmpresasIbov(top, anoBase,dre):
             #append row to the dataframe
             dfResultadoFinal = dfResultadoFinal.append(new_row, ignore_index=True)
             continue
+        #pra q?
         LPA = getEmpresaLPA(row['CVM'],anoBase,dre)
         LPA = adicionaG(LPA)
         mediaLPA = LPA['VL_CONTA'].mean()
@@ -72,12 +73,13 @@ def printContas(codCVM, ano,dre):
     with pd.option_context('display.max_rows', None, 'display.max_columns', None):  # more options can be specified also
         print(contas)
 
-
+#retorna o lucro por acao da empresa, se baseando no DRE
 def getEmpresaLPA(codCVM, ano,dre):
     empresa = dre[dre['CD_CVM'] == codCVM]
     #contas = empresa[['CD_CONTA', 'DS_CONTA'].drop_duplicates().set_index('CD_CONTA')
 
     # Seleciona qual conta realizar calculo
+    #ALTERAR somar os valores e nao só verificar 1, entender o que é esse código
     LPA = empresa[empresa['CD_CONTA'] == '3.99.01.01']
     if (LPA.size > 0):
         print("Maior11")
@@ -134,7 +136,8 @@ def mediaLpa(a, b):
         return (a+b)/2
     else:
         return a
-
+    
+   #calculo da media de crescimento, utilizando a média móvel de 4 
 def adicionaG(LPA):
     # calcular media movel do LPA, pois ele oscila mt nos anos
     LPA['LPAMedia4'] = LPA["VL_CONTA"].rolling(4).mean()
@@ -232,6 +235,48 @@ def analiseIndividual(codigo,ano):
     print(valorIntrinseco)
 
 
+#retorna o lucro por acao da empresa, se baseando no DRE
+def getLucrosEmpresa(codCVM,dre):
+    empresa = dre[dre['CD_CVM'] == codCVM]
+    #contas = empresa[['CD_CONTA', 'DS_CONTA'].drop_duplicates().set_index('CD_CONTA')
+
+    # Seleciona qual conta realizar calculo
+    #ALTERAR somar os valores e nao só verificar 1, entender o que é esse código
+    LPA = empresa[empresa['CD_CONTA'] == '3.99.01.01']
+    if (LPA.size > 0):
+        print("Maior11")
+    else:
+        LPA = empresa[empresa['CD_CONTA'] == '3.99.01.02']
+        if (LPA.size > 0 and LPA['VL_CONTA'].mean() != 0):
+            print("Maior12")
+        else:
+            LPA = empresa[empresa['CD_CONTA'] == '3.99.02.01']
+            if (LPA.size > 0 and LPA['VL_CONTA'].mean() != 0):
+                print("Maior21")
+            else:
+                LPA = empresa[empresa['CD_CONTA'] == '3.99.02.02']
+                if (LPA.size > 0 and LPA['VL_CONTA'].mean() != 0):
+                    print("Maior22")
+                else:
+                    LPA = empresa[empresa['CD_CONTA'] == '3.99']
+                    print(LPA)
+                    if (LPA.size > 0 and LPA['VL_CONTA'].mean() != 0):
+                        print("Maior22")
+                    else:
+                        LPA = empresa[empresa['CD_CONTA'] == '3.99.01']
+                        if (LPA.size > 0 and LPA['VL_CONTA'].mean() != 0):
+                            print("Maior9901")
+                        else:
+                            LPA = empresa[empresa['CD_CONTA'] == '3.99.02']
+                            print("Maior9902")
+                            if not (LPA.size > 0 and LPA['VL_CONTA'].mean() != 0):
+                                print("Erro")
+                                raise Exception("No VPL")
+    print(LPA);
+    print(LPA["VL_CONTA"]);
+    return LPA;
+
+
 
 print(getCodigoCVM('IRBR3.SA'))
 dre = pd.read_csv('DADOS//itr_dfp_cia_aberta__cia_aberta_DRE_ind_2011_2022.csv')
@@ -241,7 +286,9 @@ dre = pd.read_csv('DADOS//itr_dfp_cia_aberta__cia_aberta_DRE_ind_2011_2022.csv')
 
 #printContas('24180',2016,dre)
 #getValorPresenteTopEmpresasIbov(85, 2016,dre)
-getValorPresenteTopEmpresasIbov(50, 2016,dre)
+#getValorPresenteTopEmpresasIbov(50, 2016,dre)
+
+getLucrosEmpresa(22187,dre);
 
 
 #proximo

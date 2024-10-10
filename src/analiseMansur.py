@@ -6,10 +6,10 @@ from zipfile import ZipFile
 #processo de download
 url_base = 'https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/DFP/DADOS/'
 
-
+anoFInalNaoIncluido = 2025
 arquivos_zip = []
 
-for ano in range(2011,2023):
+for ano in range(2011,anoFInalNaoIncluido):
     arquivos_zip.append(f'dfp_cia_aberta_{ano}.zip')
 
 for arq in arquivos_zip:
@@ -20,7 +20,7 @@ url_baseITR = 'https://dados.cvm.gov.br/dados/CIA_ABERTA/DOC/ITR/DADOS/'
 
 arquivos_zip_itr = []
 
-for ano in range(2011,2023):
+for ano in range(2011,anoFInalNaoIncluido):
     arquivos_zip_itr.append(f'itr_cia_aberta_{ano}.zip')
 
 for arq in arquivos_zip_itr:
@@ -44,7 +44,7 @@ nomes = ['_cia_aberta_BPA_con','_cia_aberta_BPA_ind','_cia_aberta_BPP_con','_cia
  #Tem erro ainda, esta criando separado ITR e DFP
 for nome in nomes:
     arquivo = pd.DataFrame()
-    for ano in range(2011,2023):
+    for ano in range(2011,anoFInalNaoIncluido):
         for tipo in ['itr','dfp']:
             arquivo = pd.concat([arquivo, pd.read_csv(f'CVM\\{tipo}{nome}_{ano}.csv', sep = ';',decimal = ',', encoding='ISO-8859-1')])
         #arquivo = pd.concat([arquivo, pd.read_csv(f'src\CVM\\itr_cia_aberta_{nome}_{ano}.csv', sep = ';',decimal = ',', encoding='ISO-8859-1')])
